@@ -1,8 +1,8 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MARTIM | VAULT</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -18,11 +18,19 @@
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        html { scroll-behavior: smooth; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { 
+            scroll-behavior: smooth; 
+            overflow-x: hidden; 
+            width: 100%;
+            position: relative;
+            touch-action: pan-y;
+            background: var(--bg);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body { 
-            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; 
-            overflow-x: hidden;
+            color: var(--text); font-family: 'Inter', sans-serif; 
             background-image: radial-gradient(circle at 80% 20%, rgba(88, 28, 135, 0.15) 0%, transparent 40%);
         }
 
@@ -40,8 +48,8 @@
         .nav-links a:hover, .nav-links span:hover { opacity: 1; color: var(--accent); }
 
         /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-        .hero h1 { position: absolute; font-family: 'Syne'; font-size: clamp(5rem, 25vw, 15rem); font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.05); z-index: 1; text-transform: uppercase; }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .hero h1 { position: absolute; font-family: 'Syne'; font-size: clamp(4rem, 20vw, 15rem); font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.05); z-index: 1; text-transform: uppercase; white-space: nowrap; pointer-events: none; }
         .hero-glow { position: absolute; width: 400px; height: 400px; background: var(--glow); filter: blur(120px); border-radius: 50%; z-index: 0; animation: pulse 6s infinite alternate; }
         .hero-img { max-width: 700px; width: 85%; z-index: 2; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); animation: float 4s ease-in-out infinite; }
         .hero-tag { margin-top: -20px; z-index: 3; font-family: 'Syne'; font-size: 0.8rem; letter-spacing: 8px; text-transform: uppercase; color: var(--accent); }
@@ -49,7 +57,7 @@
         /* --- GRELHA --- */
         .container { max-width: 1400px; margin: 50px auto; padding: 100px 40px 50px; }
         .section-title { font-family: 'Syne'; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; opacity: 0.5; }
-        .grelha { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .grelha { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; transition: 0.4s; position: relative; cursor: pointer; }
         .card:hover { transform: translateY(-10px); border-color: var(--accent); }
         .img-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #0d1117; }
@@ -61,15 +69,15 @@
         /* --- SHOP MODAL --- */
         #shop-modal {
             display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.95);
-            z-index: 10001; backdrop-filter: blur(10px); justify-content: center; align-items: center;
+            z-index: 10001; backdrop-filter: blur(10px); justify-content: center; align-items: center; padding: 20px;
         }
         .shop-content {
-            display: grid; grid-template-columns: 1fr 1fr; width: 90%; max-width: 1000px;
+            display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 1000px;
             background: var(--card-bg); border-radius: 30px; border: 1px solid var(--border); overflow: hidden;
         }
-        .shop-img { width: 100%; height: 100%; object-fit: cover; background: #000; }
-        .shop-details { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
-        .shop-details h2 { font-family: 'Syne'; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 10px; }
+        .shop-img { width: 100%; height: 100%; max-height: 500px; object-fit: cover; background: #000; }
+        .shop-details { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .shop-details h2 { font-family: 'Syne'; font-size: 2rem; text-transform: uppercase; margin-bottom: 10px; }
         .shop-price { font-size: 1.5rem; color: var(--accent); font-weight: 700; margin-bottom: 30px; }
         .vinted-btn { 
             padding: 20px; background: #fff; color: #000; text-decoration: none; text-align: center;
@@ -79,7 +87,7 @@
         .vinted-btn:hover { background: var(--accent); transform: scale(1.02); }
 
         /* --- ADMIN TOOLS --- */
-        .btn-float { position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; }
+        .btn-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; }
         #login-overlay, #form-modal { display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.98); z-index: 10000; justify-content: center; align-items: center; }
         .modal-box { width: 90%; max-width: 400px; text-align: center; }
         input { width: 100%; padding: 15px; margin-bottom: 15px; background: #161b22; border: 1px solid var(--border); color: #fff; border-radius: 10px; outline: none; }
@@ -88,12 +96,18 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.2); opacity: 0.6; } }
 
+        /* --- MOBILE ADJUSTS --- */
         @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .grelha { grid-template-columns: 1fr; }
             .shop-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+            .shop-img { height: 300px; }
             .shop-details { padding: 30px; }
-            .navbar { padding: 10px 20px; }
+            .navbar { padding: 10px 20px; width: 95%; }
+            .logo-container img { height: 40px; }
+            .nav-links { gap: 10px; font-size: 0.55rem; }
+            .container { padding: 80px 20px 50px; }
         }
-        
     </style>
 </head>
 <body>
@@ -157,7 +171,6 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    // IMPORTANTE: Adicionamos o Firestore
     import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = { 
@@ -169,10 +182,9 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app); // Ligação à base de dados
+    const db = getFirestore(app);
     let userLogado = null;
 
-    // LOGIN & LOGOUT (Igual ao anterior)
     window.abrirLogin = () => document.getElementById('login-overlay').style.display = 'flex';
     window.fecharLogin = () => document.getElementById('login-overlay').style.display = 'none';
     window.login = async () => {
@@ -195,9 +207,8 @@
         }
     });
 
-    // RENDERIZAR EM TEMPO REAL (Cloud)
     const vitrine = document.getElementById('vitrine');
-    const q = query(collection(db, "artigos")); // Puxa da coleção "artigos"
+    const q = query(collection(db, "artigos"), orderBy("data", "desc"));
 
     onSnapshot(q, (snapshot) => {
         vitrine.innerHTML = "";
@@ -216,7 +227,6 @@
         });
     });
 
-    // SALVAR NO CLOUD
     window.salvarArtigo = async () => {
         const nome = document.getElementById('nome-novo').value.toUpperCase();
         const foto = document.getElementById('foto-nova').value;
@@ -233,7 +243,6 @@
         if(confirm("Eliminar definitivamente?")) { await deleteDoc(doc(db, "artigos", id)); }
     };
 
-    // FUNÇÕES DE UI (Igual ao anterior)
     window.abrirShop = (nome, preco, foto, link) => {
         document.getElementById('shop-title').innerText = nome;
         document.getElementById('shop-price').innerText = preco;
