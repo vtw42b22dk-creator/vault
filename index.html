@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARTIM | VAULT</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #0b0e14;
+            --card-bg: #161b22;
+            --text: #ffffff;
+            --accent: #d8b4fe; 
+            --glow: rgba(168, 85, 247, 0.4);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 80% 20%, rgba(88, 28, 135, 0.15) 0%, transparent 40%);
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1400px; padding: 10px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(15px);
+            border-radius: 100px; border: 1px solid var(--border); z-index: 1000;
+        }
+        .logo-container img { height: 60px; filter: drop-shadow(0 0 10px var(--glow)); }
+        .nav-links { display: flex; gap: 30px; font-family: 'Syne'; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; align-items: center; }
+        .nav-links a, .nav-links span { text-decoration: none; color: inherit; cursor: pointer; opacity: 0.6; transition: 0.3s; }
+        .nav-links a:hover, .nav-links span:hover { opacity: 1; color: var(--accent); }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        .hero h1 { position: absolute; font-family: 'Syne'; font-size: clamp(5rem, 25vw, 15rem); font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.05); z-index: 1; text-transform: uppercase; }
+        .hero-glow { position: absolute; width: 400px; height: 400px; background: var(--glow); filter: blur(120px); border-radius: 50%; z-index: 0; animation: pulse 6s infinite alternate; }
+        .hero-img { max-width: 700px; width: 85%; z-index: 2; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); animation: float 4s ease-in-out infinite; }
+        .hero-tag { margin-top: -20px; z-index: 3; font-family: 'Syne'; font-size: 0.8rem; letter-spacing: 8px; text-transform: uppercase; color: var(--accent); }
+
+        /* --- GRELHA --- */
+        .container { max-width: 1400px; margin: 50px auto; padding: 100px 40px 50px; }
+        .section-title { font-family: 'Syne'; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; opacity: 0.5; }
+        .grelha { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; transition: 0.4s; position: relative; cursor: pointer; }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
+        .img-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #0d1117; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .card-info { padding: 20px 5px; }
+        .card-info h3 { font-family: 'Syne'; font-size: 1.1rem; text-transform: uppercase; }
+        .price { color: var(--accent); font-weight: 700; }
+
+        /* --- SHOP MODAL --- */
+        #shop-modal {
+            display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.95);
+            z-index: 10001; backdrop-filter: blur(10px); justify-content: center; align-items: center;
+        }
+        .shop-content {
+            display: grid; grid-template-columns: 1fr 1fr; width: 90%; max-width: 1000px;
+            background: var(--card-bg); border-radius: 30px; border: 1px solid var(--border); overflow: hidden;
+        }
+        .shop-img { width: 100%; height: 100%; object-fit: cover; background: #000; }
+        .shop-details { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .shop-details h2 { font-family: 'Syne'; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 10px; }
+        .shop-price { font-size: 1.5rem; color: var(--accent); font-weight: 700; margin-bottom: 30px; }
+        .vinted-btn { 
+            padding: 20px; background: #fff; color: #000; text-decoration: none; text-align: center;
+            font-family: 'Syne'; font-weight: 800; text-transform: uppercase; border-radius: 10px;
+            transition: 0.3s;
+        }
+        .vinted-btn:hover { background: var(--accent); transform: scale(1.02); }
+
+        /* --- ADMIN TOOLS --- */
+        .btn-float { position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; }
+        #login-overlay, #form-modal { display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.98); z-index: 10000; justify-content: center; align-items: center; }
+        .modal-box { width: 90%; max-width: 400px; text-align: center; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; background: #161b22; border: 1px solid var(--border); color: #fff; border-radius: 10px; outline: none; }
+        .btn-action { width: 100%; padding: 15px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-family: 'Syne'; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.2); opacity: 0.6; } }
+
+        @media (max-width: 768px) {
+            .shop-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+            .shop-details { padding: 30px; }
+            .navbar { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container"><img src="imagens/12345.png" alt="MARTIM LOGO"></div>
+        <div class="nav-links">
+            <a href="#colecao">coleção</a>
+            <a href="sobre.html">sobre</a>
+            <span id="btn-auth-toggle">Login</span>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-glow"></div>
+        <h1>MARTIM</h1>
+        <img src="imagens/fundo.png" class="hero-img">
+        <div class="hero-tag">ARTIGOS VINTED 2026</div>
+    </header>
+
+    <main class="container" id="colecao">
+        <div class="section-title">ULTIMAS ADIÇÕES</div>
+        <div id="vitrine" class="grelha"></div>
+    </main>
+
+    <div id="shop-modal" onclick="fecharShop(event)">
+        <div class="shop-content" onclick="event.stopPropagation()">
+            <img id="shop-img" class="shop-img" src="" alt="Produto">
+            <div class="shop-details">
+                <h2 id="shop-title">NOME DA PEÇA</h2>
+                <div id="shop-price" class="shop-price">00.00 €</div>
+                <p style="margin-bottom: 40px; opacity: 0.6; font-size: 0.9rem;">Peça selecionada do arquivo pessoal. Disponível para compra segura via Vinted.</p>
+                <a id="shop-link" href="#" target="_blank" class="vinted-btn">Comprar no Vinted</a>
+                <p onclick="document.getElementById('shop-modal').style.display='none'" style="margin-top: 30px; font-size: 0.7rem; opacity: 0.4; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Fechar Detalhes</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-controls" style="display:none;" onclick="abrirForm()">
+        <div class="btn-float"><i class="fas fa-plus"></i></div>
+    </div>
+
+    <div id="login-overlay">
+        <div class="modal-box">
+            <h2>INICIAR SESSÃO</h2>
+            <input type="email" id="email" placeholder="Email"><input type="password" id="password" placeholder="Password">
+            <button class="btn-action" onclick="login()">DESBLOQUEAR</button>
+            <p onclick="fecharLogin()" style="margin-top:20px; font-size:0.6rem; cursor:pointer; opacity:0.4;">Voltar Atrás</p>
+        </div>
+    </div>
+
+    <div id="form-modal">
+        <div class="modal-box">
+            <h2>Add Piece</h2>
+            <input type="text" id="nome-novo" placeholder="Name"><input type="text" id="foto-nova" placeholder="Image.jpg"><input type="text" id="preco-novo" placeholder="Price"><input type="text" id="link-novo" placeholder="Vinted URL">
+            <button class="btn-action" onclick="salvarArtigo()">Archive Piece</button>
+            <p onclick="fecharForm()" style="margin-top:20px; font-size:0.6rem; cursor:pointer; opacity:0.4;">Cancel</p>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    // IMPORTANTE: Adicionamos o Firestore
+    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+        apiKey: "AIzaSyAGbCACQ2D-8UE2kJWFqnKvk3Iy1o8r9PA", 
+        authDomain: "teste1-49fd3.firebaseapp.com", 
+        projectId: "teste1-49fd3", 
+        appId: "1:251239259277:web:5977da559010cc20e896c4" 
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app); // Ligação à base de dados
+    let userLogado = null;
+
+    // LOGIN & LOGOUT (Igual ao anterior)
+    window.abrirLogin = () => document.getElementById('login-overlay').style.display = 'flex';
+    window.fecharLogin = () => document.getElementById('login-overlay').style.display = 'none';
+    window.login = async () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        try { await signInWithEmailAndPassword(auth, email, pass); fecharLogin(); } catch (e) { alert("Erro de acesso."); }
+    };
+    window.logout = () => signOut(auth);
+
+    onAuthStateChanged(auth, (user) => {
+        userLogado = user;
+        const btnAuth = document.getElementById('btn-auth-toggle');
+        const adminControls = document.getElementById('admin-controls');
+        if (user) {
+            btnAuth.innerText = "Logout"; btnAuth.onclick = window.logout;
+            adminControls.style.display = 'block';
+        } else {
+            btnAuth.innerText = "Login"; btnAuth.onclick = window.abrirLogin;
+            adminControls.style.display = 'none';
+        }
+    });
+
+    // RENDERIZAR EM TEMPO REAL (Cloud)
+    const vitrine = document.getElementById('vitrine');
+    const q = query(collection(db, "artigos")); // Puxa da coleção "artigos"
+
+    onSnapshot(q, (snapshot) => {
+        vitrine.innerHTML = "";
+        snapshot.forEach((docSnap) => {
+            const a = docSnap.data();
+            const id = docSnap.id;
+            vitrine.innerHTML += `
+                <div class="card" onclick="abrirShop('${a.nome}', '${a.preco}', '${a.foto}', '${a.link}')">
+                    <div class="img-wrapper"><img src="imagens/${a.foto}"></div>
+                    <div class="card-info">
+                        <h3>${a.nome}</h3>
+                        <div class="price">${a.preco}</div>
+                        ${userLogado ? `<p style="color:red; cursor:pointer; font-size:0.5rem; margin-top:10px;" onclick="event.stopPropagation(); eliminarArtigo('${id}')">ELIMINAR</p>` : ''}
+                    </div>
+                </div>`;
+        });
+    });
+
+    // SALVAR NO CLOUD
+    window.salvarArtigo = async () => {
+        const nome = document.getElementById('nome-novo').value.toUpperCase();
+        const foto = document.getElementById('foto-nova').value;
+        const preco = document.getElementById('preco-novo').value;
+        const link = document.getElementById('link-novo').value;
+        
+        try {
+            await addDoc(collection(db, "artigos"), { nome, foto, preco, link, data: Date.now() });
+            fecharForm();
+        } catch (e) { alert("Erro ao salvar."); }
+    };
+
+    window.eliminarArtigo = async (id) => {
+        if(confirm("Eliminar definitivamente?")) { await deleteDoc(doc(db, "artigos", id)); }
+    };
+
+    // FUNÇÕES DE UI (Igual ao anterior)
+    window.abrirShop = (nome, preco, foto, link) => {
+        document.getElementById('shop-title').innerText = nome;
+        document.getElementById('shop-price').innerText = preco;
+        document.getElementById('shop-img').src = `imagens/${foto}`;
+        document.getElementById('shop-link').href = link;
+        document.getElementById('shop-modal').style.display = 'flex';
+    };
+    window.fecharShop = (e) => { if(e.target.id === 'shop-modal') document.getElementById('shop-modal').style.display = 'none'; };
+    window.abrirForm = () => document.getElementById('form-modal').style.display = 'flex';
+    window.fecharForm = () => document.getElementById('form-modal').style.display = 'none';
+</script>
+</body>
+</html>
