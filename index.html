@@ -16,97 +16,73 @@
             --accent: #d8b4fe; 
             --glow: rgba(168, 85, 247, 0.4);
             --border: rgba(255, 255, 255, 0.1);
+            --danger: #ff4d4d;
         }
 
-        html, body { 
-            scroll-behavior: smooth; 
-            overflow-x: hidden; 
-            width: 100%;
-            position: relative;
-            touch-action: pan-y;
-            background: var(--bg);
-        }
-
+        html, body { scroll-behavior: smooth; overflow-x: hidden; width: 100%; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body { 
-            color: var(--text); font-family: 'Inter', sans-serif; 
-            background-image: radial-gradient(circle at 80% 20%, rgba(88, 28, 135, 0.15) 0%, transparent 40%);
-        }
-
-        /* --- NAVBAR --- */
-        .navbar {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 1400px; padding: 10px 30px;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(15px);
-            border-radius: 100px; border: 1px solid var(--border); z-index: 1000;
-        }
-        .logo-container img { height: 60px; filter: drop-shadow(0 0 10px var(--glow)); }
-        .nav-links { display: flex; gap: 30px; font-family: 'Syne'; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; align-items: center; }
+        
+        /* NAVBAR */
+        .navbar { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1400px; padding: 10px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(15px); border-radius: 100px; border: 1px solid var(--border); z-index: 1000; }
+        .logo-container img { height: 50px; filter: drop-shadow(0 0 10px var(--glow)); }
+        .nav-links { display: flex; gap: 25px; font-family: 'Syne'; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; }
         .nav-links a, .nav-links span { text-decoration: none; color: inherit; cursor: pointer; opacity: 0.6; transition: 0.3s; }
-        .nav-links a:hover, .nav-links span:hover { opacity: 1; color: var(--accent); }
+        .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .hero h1 { position: absolute; font-family: 'Syne'; font-size: clamp(4rem, 20vw, 15rem); font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.05); z-index: 1; text-transform: uppercase; white-space: nowrap; pointer-events: none; }
-        .hero-glow { position: absolute; width: 400px; height: 400px; background: var(--glow); filter: blur(120px); border-radius: 50%; z-index: 0; animation: pulse 6s infinite alternate; }
-        .hero-img { max-width: 700px; width: 85%; z-index: 2; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); animation: float 4s ease-in-out infinite; }
+        /* HERO SECTION */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; background-image: radial-gradient(circle at 50% 50%, rgba(88, 28, 135, 0.2) 0%, transparent 70%); }
+        .hero h1 { position: absolute; font-family: 'Syne'; font-size: clamp(4rem, 18vw, 15rem); font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.08); z-index: 1; text-transform: uppercase; white-space: nowrap; pointer-events: none; }
+        .hero-img { max-width: 700px; width: 85%; z-index: 2; animation: float 4s ease-in-out infinite; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); }
         .hero-tag { margin-top: -20px; z-index: 3; font-family: 'Syne'; font-size: 0.8rem; letter-spacing: 8px; text-transform: uppercase; color: var(--accent); }
 
-        /* --- GRELHA --- */
-        .container { max-width: 1400px; margin: 50px auto; padding: 100px 40px 50px; }
-        .section-title { font-family: 'Syne'; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; opacity: 0.5; }
+        /* SEPARADOR E FILTROS */
+        .search-section { background: #0d1117; padding: 60px 20px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .filter-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; flex-wrap: wrap; }
+        .search-box { flex: 2; min-width: 280px; position: relative; }
+        .search-box input { width: 100%; padding: 18px 20px 18px 55px; background: var(--bg); border: 1px solid var(--border); border-radius: 15px; color: #fff; font-family: 'Inter'; font-size: 0.9rem; transition: 0.3s; }
+        .search-box i { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); opacity: 0.4; font-size: 1.1rem; }
+        .filter-select { flex: 1; min-width: 140px; padding: 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 15px; color: #fff; appearance: none; cursor: pointer; font-family: 'Syne'; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* COLEÇÃO */
+        .container { max-width: 1400px; margin: 0 auto; padding: 80px 40px; }
+        .section-header { margin-bottom: 50px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .section-header h2 { font-family: 'Syne'; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; opacity: 0.5; }
         .grelha { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; transition: 0.4s; position: relative; cursor: pointer; }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .img-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #0d1117; }
-        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .card-info { padding: 20px 5px; }
-        .card-info h3 { font-family: 'Syne'; font-size: 1.1rem; text-transform: uppercase; }
-        .price { color: var(--accent); font-weight: 700; }
+        
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 16px; transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: pointer; }
+        .card:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .img-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 18px; overflow: hidden; background: #000; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        
+        .card-info { padding: 20px 5px 10px; }
+        .card-brand { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px; }
+        .card-info h3 { font-family: 'Syne'; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 12px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
+        .price { font-weight: 700; font-size: 1.1rem; }
+        .size-tag { font-size: 0.7rem; opacity: 0.5; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
 
-        /* --- SHOP MODAL --- */
-        #shop-modal {
-            display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.95);
-            z-index: 10001; backdrop-filter: blur(10px); justify-content: center; align-items: center; padding: 20px;
-        }
-        .shop-content {
-            display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 1000px;
-            background: var(--card-bg); border-radius: 30px; border: 1px solid var(--border); overflow: hidden;
-        }
-        .shop-img { width: 100%; height: 100%; max-height: 500px; object-fit: cover; background: #000; }
-        .shop-details { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-        .shop-details h2 { font-family: 'Syne'; font-size: 2rem; text-transform: uppercase; margin-bottom: 10px; }
-        .shop-price { font-size: 1.5rem; color: var(--accent); font-weight: 700; margin-bottom: 30px; }
-        .vinted-btn { 
-            padding: 20px; background: #fff; color: #000; text-decoration: none; text-align: center;
-            font-family: 'Syne'; font-weight: 800; text-transform: uppercase; border-radius: 10px;
-            transition: 0.3s;
-        }
-        .vinted-btn:hover { background: var(--accent); transform: scale(1.02); }
+        /* MODAIS */
+        #shop-modal { display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.98); z-index: 10001; backdrop-filter: blur(20px); justify-content: center; align-items: center; padding: 20px; }
+        .shop-content { display: grid; grid-template-columns: 1.1fr 0.9fr; width: 100%; max-width: 1100px; background: var(--card-bg); border-radius: 35px; border: 1px solid var(--border); overflow: hidden; }
+        .shop-img { width: 100%; height: 100%; min-height: 450px; object-fit: cover; }
+        .shop-details { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .vinted-btn { background: #fff; color: #000; text-decoration: none; padding: 22px; border-radius: 15px; text-align: center; font-family: 'Syne'; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .vinted-btn:hover { background: var(--accent); }
 
-        /* --- ADMIN TOOLS --- */
-        .btn-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; }
-        #login-overlay, #form-modal { display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.98); z-index: 10000; justify-content: center; align-items: center; }
-        .modal-box { width: 90%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 15px; margin-bottom: 15px; background: #161b22; border: 1px solid var(--border); color: #fff; border-radius: 10px; outline: none; }
-        .btn-action { width: 100%; padding: 15px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-family: 'Syne'; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        /* ADMIN UI */
+        .btn-float { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; font-size: 1.8rem; }
+        #form-modal, #login-overlay { display: none; position: fixed; inset: 0; background: rgba(11, 14, 20, 0.98); z-index: 10002; justify-content: center; align-items: center; }
+        .modal-box { width: 95%; max-width: 500px; background: var(--card-bg); padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
+        input, select, textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: #0b0e14; border: 1px solid var(--border); color: #fff; border-radius: 12px; font-family: inherit; }
+        .btn-action { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-family: 'Syne'; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
+        .btn-danger { width: 100%; padding: 15px; background: transparent; color: var(--danger); border: 1px solid var(--danger); border-radius: 12px; font-family: 'Syne'; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-top: 10px; display: none; }
+        .btn-danger:hover { background: var(--danger); color: #fff; }
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.2); opacity: 0.6; } }
 
-        /* --- MOBILE ADJUSTS --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .grelha { grid-template-columns: 1fr; }
-            .shop-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
-            .shop-img { height: 300px; }
-            .shop-details { padding: 30px; }
-            .navbar { padding: 10px 20px; width: 95%; }
-            .logo-container img { height: 40px; }
-            .nav-links { gap: 10px; font-size: 0.55rem; }
-            .container { padding: 80px 20px 50px; }
+        @media (max-width: 992px) {
+            .shop-content { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+            .shop-details { padding: 40px; }
         }
     </style>
 </head>
@@ -115,33 +91,67 @@
     <nav class="navbar">
         <div class="logo-container"><img src="imagens/12345.png" alt="MARTIM LOGO"></div>
         <div class="nav-links">
-            <a href="#colecao">coleção</a>
-            <a href="sobre.html">sobre</a>
+            <a href="#colecao">Coleção</a>
+            <a href="#sobre">Sobre</a>
             <span id="btn-auth-toggle">Login</span>
         </div>
     </nav>
 
     <header class="hero">
-        <div class="hero-glow"></div>
         <h1>MARTIM</h1>
         <img src="imagens/fundo.png" class="hero-img">
-        <div class="hero-tag">ARTIGOS VINTED 2026</div>
+        <div class="hero-tag">Vault Archive 2026</div>
     </header>
 
+    <section class="search-section">
+        <div class="filter-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="inputPesquisa" placeholder="Procurar modelo ou marca...">
+            </div>
+            <select id="filtroMarca" class="filter-select">
+                <option value="">Todas as Marcas</option>
+            </select>
+            <select id="filtroTamanho" class="filter-select">
+                <option value="">Tamanhos</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+            </select>
+        </div>
+    </section>
+
     <main class="container" id="colecao">
-        <div class="section-title">ULTIMAS ADIÇÕES</div>
+        <div class="section-header"><h2>Current Archive</h2></div>
         <div id="vitrine" class="grelha"></div>
     </main>
 
+    <section class="sobre-section" id="sobre" style="background: #0d1117; padding: 120px 40px; border-top: 1px solid var(--border);">
+        <div style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;" class="sobre-container">
+            <div class="sobre-item">
+                <h2 style="font-family:'Syne'; font-size:1.8rem; text-transform:uppercase; margin-bottom:25px; color:var(--accent);">O PROJETO</h2>
+                <p style="opacity:0.7; line-height:1.9;"><strong>MARTIM | VAULT</strong> é um arquivo digital curado, focado na preservação e partilha de peças selecionadas. Mais do que uma loja, é uma montra técnica de itens que carregam história e design.</p>
+            </div>
+            <div class="sobre-item">
+                <h2 style="font-family:'Syne'; font-size:1.8rem; text-transform:uppercase; margin-bottom:25px; color:var(--accent);">COMO FUNCIONA</h2>
+                <p style="opacity:0.7; line-height:1.9;">A nossa plataforma funciona como um catálogo em tempo real. Cada peça listada é única e redireciona diretamente para a nossa página oficial na Vinted, garantindo um processo de compra 100% seguro.</p>
+            </div>
+        </div>
+    </section>
+
     <div id="shop-modal" onclick="fecharShop(event)">
         <div class="shop-content" onclick="event.stopPropagation()">
-            <img id="shop-img" class="shop-img" src="" alt="Produto">
+            <img id="shop-img" class="shop-img" src="">
             <div class="shop-details">
-                <h2 id="shop-title">NOME DA PEÇA</h2>
-                <div id="shop-price" class="shop-price">00.00 €</div>
-                <p style="margin-bottom: 40px; opacity: 0.6; font-size: 0.9rem;">Peça selecionada do arquivo pessoal. Disponível para compra segura via Vinted.</p>
+                <div id="shop-brand" class="shop-brand" style="font-family:'Syne'; color:var(--accent); font-size:0.8rem; letter-spacing:4px; text-transform:uppercase; margin-bottom:15px;"></div>
+                <h2 id="shop-title" style="font-family:'Syne'; font-size:2.5rem; text-transform:uppercase; margin-bottom:15px;"></h2>
+                <div style="display:flex; align-items:center; gap:20px; margin-bottom:30px;">
+                    <div id="shop-price" style="font-size:2rem; font-weight:800;"></div>
+                    <div id="shop-size" class="size-tag"></div>
+                </div>
+                <p id="shop-desc" style="opacity:0.6; line-height:1.7; margin-bottom:40px;"></p>
                 <a id="shop-link" href="#" target="_blank" class="vinted-btn">Comprar no Vinted</a>
-                <p onclick="document.getElementById('shop-modal').style.display='none'" style="margin-top: 30px; font-size: 0.7rem; opacity: 0.4; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">Fechar Detalhes</p>
             </div>
         </div>
     </div>
@@ -150,28 +160,41 @@
         <div class="btn-float"><i class="fas fa-plus"></i></div>
     </div>
 
-    <div id="login-overlay">
+    <div id="form-modal">
         <div class="modal-box">
-            <h2>INICIAR SESSÃO</h2>
-            <input type="email" id="email" placeholder="Email"><input type="password" id="password" placeholder="Password">
-            <button class="btn-action" onclick="login()">DESBLOQUEAR</button>
-            <p onclick="fecharLogin()" style="margin-top:20px; font-size:0.6rem; cursor:pointer; opacity:0.4;">Voltar Atrás</p>
+            <h2 id="form-titulo" style="font-family:'Syne'; margin-bottom:25px;">NOVA PEÇA</h2>
+            <input type="hidden" id="edit-id">
+            <input type="text" id="nome-novo" placeholder="Nome do Artigo">
+            <input type="text" id="marca-nova" placeholder="Marca (ex: NIKE)">
+            <select id="tamanho-novo">
+                <option value="S">S</option><option value="M" selected>M</option>
+                <option value="L">L</option><option value="XL">XL</option>
+            </select>
+            <input type="text" id="foto-nova" placeholder="imagem.jpg">
+            <input type="text" id="preco-novo" placeholder="Preço (ex: 13)">
+            <input type="text" id="link-novo" placeholder="URL Vinted">
+            <textarea id="desc-nova" placeholder="Descrição da peça..."></textarea>
+            
+            <button class="btn-action" onclick="salvarArtigo()">Confirmar Artigo</button>
+            <button id="btn-eliminar" class="btn-danger" onclick="eliminarArtigo()">Eliminar Artigo</button>
+            
+            <p onclick="fecharForm()" style="text-align:center; margin-top:15px; opacity:0.4; cursor:pointer; font-size:0.7rem;">CANCELAR</p>
         </div>
     </div>
 
-    <div id="form-modal">
+    <div id="login-overlay">
         <div class="modal-box">
-            <h2>Add Piece</h2>
-            <input type="text" id="nome-novo" placeholder="Name"><input type="text" id="foto-nova" placeholder="Image.jpg"><input type="text" id="preco-novo" placeholder="Price"><input type="text" id="link-novo" placeholder="Vinted URL">
-            <button class="btn-action" onclick="salvarArtigo()">Archive Piece</button>
-            <p onclick="fecharForm()" style="margin-top:20px; font-size:0.6rem; cursor:pointer; opacity:0.4;">Cancel</p>
+            <h2 style="font-family:'Syne'; margin-bottom:20px;">ADMIN LOGIN</h2>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button class="btn-action" onclick="login()">Entrar</button>
         </div>
     </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = { 
         apiKey: "AIzaSyAGbCACQ2D-8UE2kJWFqnKvk3Iy1o8r9PA", 
@@ -184,75 +207,176 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     let userLogado = null;
+    let todosArtigos = [];
 
-    window.abrirLogin = () => document.getElementById('login-overlay').style.display = 'flex';
-    window.fecharLogin = () => document.getElementById('login-overlay').style.display = 'none';
-    window.login = async () => {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('password').value;
-        try { await signInWithEmailAndPassword(auth, email, pass); fecharLogin(); } catch (e) { alert("Erro de acesso."); }
+    // --- FUNÇÃO PARA FORMATAR PREÇO AUTOMATICAMENTE ---
+    const formatarPrecoAutomatico = (valor) => {
+        let limpo = valor.toString().replace('€', '').replace('$', '').trim();
+        if (limpo === "") return "";
+        if (!limpo.includes(',')) {
+            limpo = limpo + ",00";
+        }
+        return limpo + "€";
     };
-    window.logout = () => signOut(auth);
 
+    // AUTH
+    window.login = async () => {
+        try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); document.getElementById('login-overlay').style.display='none'; }
+        catch (e) { alert("Erro de login."); }
+    };
     onAuthStateChanged(auth, (user) => {
         userLogado = user;
-        const btnAuth = document.getElementById('btn-auth-toggle');
-        const adminControls = document.getElementById('admin-controls');
-        if (user) {
-            btnAuth.innerText = "Logout"; btnAuth.onclick = window.logout;
-            adminControls.style.display = 'block';
-        } else {
-            btnAuth.innerText = "Login"; btnAuth.onclick = window.abrirLogin;
-            adminControls.style.display = 'none';
-        }
+        document.getElementById('admin-controls').style.display = user ? 'block' : 'none';
+        document.getElementById('btn-auth-toggle').innerText = user ? 'Logout' : 'Login';
+        document.getElementById('btn-auth-toggle').onclick = user ? () => signOut(auth) : () => document.getElementById('login-overlay').style.display='flex';
+        // Re-renderizar para mostrar/esconder botões de edição corretamente
+        renderizar(todosArtigos);
     });
 
-    const vitrine = document.getElementById('vitrine');
-    const q = query(collection(db, "artigos"), orderBy("data", "desc"));
-
-    onSnapshot(q, (snapshot) => {
-        vitrine.innerHTML = "";
-        snapshot.forEach((docSnap) => {
-            const a = docSnap.data();
-            const id = docSnap.id;
-            vitrine.innerHTML += `
-                <div class="card" onclick="abrirShop('${a.nome}', '${a.preco}', '${a.foto}', '${a.link}')">
-                    <div class="img-wrapper"><img src="imagens/${a.foto}"></div>
-                    <div class="card-info">
-                        <h3>${a.nome}</h3>
-                        <div class="price">${a.preco}</div>
-                        ${userLogado ? `<p style="color:red; cursor:pointer; font-size:0.5rem; margin-top:10px;" onclick="event.stopPropagation(); eliminarArtigo('${id}')">ELIMINAR</p>` : ''}
-                    </div>
-                </div>`;
-        });
-    });
-
-    window.salvarArtigo = async () => {
-        const nome = document.getElementById('nome-novo').value.toUpperCase();
-        const foto = document.getElementById('foto-nova').value;
-        const preco = document.getElementById('preco-novo').value;
-        const link = document.getElementById('link-novo').value;
+    // DINAMISMO DE MARCAS NO FILTRO
+    const atualizarFiltroMarcas = (artigos) => {
+        const select = document.getElementById('filtroMarca');
+        const marcasExistentes = [...new Set(artigos.map(a => a.marca).filter(m => m))];
+        marcasExistentes.sort();
         
-        try {
-            await addDoc(collection(db, "artigos"), { nome, foto, preco, link, data: Date.now() });
+        select.innerHTML = '<option value="">Todas as Marcas</option>';
+        marcasExistentes.forEach(marca => {
+            select.innerHTML += `<option value="${marca.toUpperCase()}">${marca}</option>`;
+        });
+    };
+
+    // RENDER E FILTRO
+    const renderizar = (lista) => {
+        const vitrine = document.getElementById('vitrine');
+        vitrine.innerHTML = "";
+        lista.forEach(a => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Clique principal abre a visualização do produto
+            card.onclick = () => abrirShop(a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho);
+
+            card.innerHTML = `
+                <div class="img-wrapper"><img src="imagens/${a.foto}"></div>
+                <div class="card-info">
+                    <div class="card-brand">${a.marca || 'VAULT'}</div>
+                    <h3>${a.nome}</h3>
+                    <div class="card-footer">
+                        <span class="price">${a.preco}</span>
+                        <span class="size-tag">${a.tamanho || 'M'}</span>
+                    </div>
+                    ${userLogado ? `<p id="edit-btn-${a.id}" style="color:var(--accent); font-size:0.6rem; margin-top:15px; font-weight:bold; cursor:pointer; display:inline-block;">EDITAR</p>` : ''}
+                </div>`;
+
+            // Configuração segura do botão editar
+            if (userLogado) {
+                setTimeout(() => {
+                    const btn = document.getElementById(`edit-btn-${a.id}`);
+                    if (btn) {
+                        btn.onclick = (e) => {
+                            e.stopPropagation(); // Impede de abrir o modal de compra ao clicar em editar
+                            prepararEdicao(a.id, a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho);
+                        };
+                    }
+                }, 0);
+            }
+            vitrine.appendChild(card);
+        });
+    };
+
+    const filtrar = () => {
+        const termo = document.getElementById('inputPesquisa').value.toLowerCase();
+        const marca = document.getElementById('filtroMarca').value.toUpperCase();
+        const tamanho = document.getElementById('filtroTamanho').value;
+        const filtrados = todosArtigos.filter(a => {
+            const matchNome = a.nome.toLowerCase().includes(termo);
+            const matchMarca = marca === "" || (a.marca && a.marca.toUpperCase() === marca);
+            const matchTamanho = tamanho === "" || a.tamanho === tamanho;
+            return matchNome && matchMarca && matchTamanho;
+        });
+        renderizar(filtrados);
+    };
+
+    document.getElementById('inputPesquisa').oninput = filtrar;
+    document.getElementById('filtroMarca').onchange = filtrar;
+    document.getElementById('filtroTamanho').onchange = filtrar;
+
+    onSnapshot(query(collection(db, "artigos"), orderBy("data", "desc")), (snap) => {
+        todosArtigos = snap.docs.map(d => ({id: d.id, ...d.data()}));
+        atualizarFiltroMarcas(todosArtigos);
+        filtrar();
+    });
+
+    // CRUD SEGURO
+    window.salvarArtigo = async () => {
+        if (!userLogado) return alert("Ação não permitida.");
+        
+        const id = document.getElementById('edit-id').value;
+        const precoRaw = document.getElementById('preco-novo').value;
+        
+        const dados = {
+            nome: document.getElementById('nome-novo').value,
+            marca: document.getElementById('marca-nova').value.toUpperCase().trim(),
+            tamanho: document.getElementById('tamanho-novo').value,
+            foto: document.getElementById('foto-nova').value,
+            preco: formatarPrecoAutomatico(precoRaw),
+            link: document.getElementById('link-novo').value,
+            descricao: document.getElementById('desc-nova').value,
+            data: Date.now()
+        };
+        
+        if(!dados.nome || !precoRaw) return alert("Nome e Preço são obrigatórios.");
+        id ? await updateDoc(doc(db, "artigos", id), dados) : await addDoc(collection(db, "artigos"), dados);
+        fecharForm();
+    };
+
+    window.eliminarArtigo = async () => {
+        if (!userLogado) return;
+        const id = document.getElementById('edit-id').value;
+        if(id && confirm("Desejas eliminar esta peça do arquivo para sempre?")) {
+            await deleteDoc(doc(db, "artigos", id));
             fecharForm();
-        } catch (e) { alert("Erro ao salvar."); }
+        }
     };
 
-    window.eliminarArtigo = async (id) => {
-        if(confirm("Eliminar definitivamente?")) { await deleteDoc(doc(db, "artigos", id)); }
+    window.prepararEdicao = (id, nome, preco, foto, link, desc, marca, tam) => {
+        if (!userLogado) return; // Bloqueio extra
+        document.getElementById('edit-id').value = id;
+        document.getElementById('nome-novo').value = nome;
+        document.getElementById('marca-nova').value = marca || '';
+        document.getElementById('tamanho-novo').value = tam || 'M';
+        document.getElementById('preco-novo').value = preco;
+        document.getElementById('foto-nova').value = foto;
+        document.getElementById('link-novo').value = link;
+        document.getElementById('desc-nova').value = desc || '';
+        document.getElementById('form-titulo').innerText = "EDITAR ARTIGO";
+        document.getElementById('btn-eliminar').style.display = "block";
+        document.getElementById('form-modal').style.display = 'flex';
     };
 
-    window.abrirShop = (nome, preco, foto, link) => {
+    window.abrirShop = (nome, preco, foto, link, desc, marca, tam) => {
         document.getElementById('shop-title').innerText = nome;
+        document.getElementById('shop-brand').innerText = marca || 'VAULT PIECE';
         document.getElementById('shop-price').innerText = preco;
+        document.getElementById('shop-size').innerText = tam || 'M';
         document.getElementById('shop-img').src = `imagens/${foto}`;
         document.getElementById('shop-link').href = link;
+        document.getElementById('shop-desc').innerText = desc || "Peça selecionada do arquivo pessoal.";
         document.getElementById('shop-modal').style.display = 'flex';
     };
-    window.fecharShop = (e) => { if(e.target.id === 'shop-modal') document.getElementById('shop-modal').style.display = 'none'; };
-    window.abrirForm = () => document.getElementById('form-modal').style.display = 'flex';
-    window.fecharForm = () => document.getElementById('form-modal').style.display = 'none';
+
+    window.fecharShop = (e) => e.target.id === 'shop-modal' && (document.getElementById('shop-modal').style.display='none');
+    window.abrirForm = () => { 
+        if (!userLogado) return;
+        document.getElementById('edit-id').value=""; 
+        document.getElementById('form-titulo').innerText = "NOVA PEÇA";
+        document.getElementById('btn-eliminar').style.display = "none";
+        document.getElementById('form-modal').style.display='flex'; 
+    };
+    window.fecharForm = () => {
+        document.getElementById('form-modal').style.display='none';
+        const inputs = document.querySelectorAll('#form-modal input, #form-modal textarea');
+        inputs.forEach(i => i.value = "");
+    };
 </script>
 </body>
 </html>
