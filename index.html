@@ -66,8 +66,15 @@
         .shop-content { display: grid; grid-template-columns: 1.1fr 0.9fr; width: 100%; max-width: 1100px; background: var(--card-bg); border-radius: 35px; border: 1px solid var(--border); overflow: hidden; }
         .shop-img { width: 100%; height: 100%; min-height: 450px; object-fit: cover; }
         .shop-details { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
-        .vinted-btn { background: #fff; color: #000; text-decoration: none; padding: 22px; border-radius: 15px; text-align: center; font-family: 'Syne'; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .vinted-btn { background: #fff; color: #000; text-decoration: none; padding: 22px; border-radius: 15px; text-align: center; font-family: 'Syne'; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; margin-bottom: 15px; }
         .vinted-btn:hover { background: var(--accent); }
+
+        /* CONTACT OPTIONS */
+        .contact-options { display: flex; gap: 10px; }
+        .contact-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 15px; border-radius: 12px; text-decoration: none; font-family: 'Syne'; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
+        .btn-whatsapp { background: #25D366; color: white !important; }
+        .btn-instagram { background: #E1306C; color: white !important; }
+        .contact-btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
         /* ADMIN UI */
         .btn-float { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2000; font-size: 1.8rem; }
@@ -83,6 +90,7 @@
         @media (max-width: 992px) {
             .shop-content { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
             .shop-details { padding: 40px; }
+            .contact-options { flex-direction: column; }
         }
     </style>
 </head>
@@ -131,11 +139,11 @@
         <div style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;" class="sobre-container">
             <div class="sobre-item">
                 <h2 style="font-family:'Syne'; font-size:1.8rem; text-transform:uppercase; margin-bottom:25px; color:var(--accent);">O PROJETO</h2>
-                <p style="opacity:0.7; line-height:1.9;"><strong>MARTIM | VAULT</strong> é um arquivo digital curado, focado na preservação e partilha de peças selecionadas. Mais do que uma loja, é uma montra técnica de itens que carregam história e design.</p>
+                <p style="opacity:0.7; line-height:1.9;"><strong>MARTIM | VAULT</strong> é um arquivo digital curado, focado na preservação e partilha de peças selecionadas.</p>
             </div>
             <div class="sobre-item">
                 <h2 style="font-family:'Syne'; font-size:1.8rem; text-transform:uppercase; margin-bottom:25px; color:var(--accent);">COMO FUNCIONA</h2>
-                <p style="opacity:0.7; line-height:1.9;">A nossa plataforma funciona como um catálogo em tempo real. Cada peça listada é única e redireciona diretamente para a nossa página oficial na Vinted, garantindo um processo de compra 100% seguro.</p>
+                <p style="opacity:0.7; line-height:1.9;">Cada peça redireciona diretamente para a Vinted, garantindo um processo seguro.</p>
             </div>
         </div>
     </section>
@@ -151,7 +159,17 @@
                     <div id="shop-size" class="size-tag"></div>
                 </div>
                 <p id="shop-desc" style="opacity:0.6; line-height:1.7; margin-bottom:40px;"></p>
+                
                 <a id="shop-link" href="#" target="_blank" class="vinted-btn">Comprar no Vinted</a>
+                
+                <div class="contact-options">
+                    <a id="shop-wa" href="#" target="_blank" class="contact-btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a id="shop-ig" href="https://instagram.com/el.rositasss" target="_blank" class="contact-btn btn-instagram">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -170,14 +188,13 @@
                 <option value="S">S</option><option value="M" selected>M</option>
                 <option value="L">L</option><option value="XL">XL</option>
             </select>
-            <input type="text" id="foto-nova" placeholder="imagem.jpg">
+            <input type="text" id="foto-nova" placeholder="nome-da-imagem (sem extensão)">
             <input type="text" id="preco-novo" placeholder="Preço (ex: 13)">
             <input type="text" id="link-novo" placeholder="URL Vinted">
             <textarea id="desc-nova" placeholder="Descrição da peça..."></textarea>
             
             <button class="btn-action" onclick="salvarArtigo()">Confirmar Artigo</button>
             <button id="btn-eliminar" class="btn-danger" onclick="eliminarArtigo()">Eliminar Artigo</button>
-            
             <p onclick="fecharForm()" style="text-align:center; margin-top:15px; opacity:0.4; cursor:pointer; font-size:0.7rem;">CANCELAR</p>
         </div>
     </div>
@@ -190,6 +207,11 @@
             <button class="btn-action" onclick="login()">Entrar</button>
         </div>
     </div>
+
+    <footer style="padding: 60px 20px; text-align: center; border-top: 1px solid var(--border); opacity: 0.6; font-size: 0.8rem;">
+        <p>&copy; 2026 MARTIM DESIGNS | Desenvolvido por Martim</p>
+        <p>Interessado num site? <a href="mailto:teu-email@exemplo.com" style="color: var(--accent); text-decoration: none; font-weight: bold;">Contacte-me por E-mail</a></p>
+    </footer>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -209,54 +231,35 @@
     let userLogado = null;
     let todosArtigos = [];
 
-    // --- FUNÇÃO PARA FORMATAR PREÇO AUTOMATICAMENTE ---
     const formatarPrecoAutomatico = (valor) => {
         let limpo = valor.toString().replace('€', '').replace('$', '').trim();
         if (limpo === "") return "";
-        if (!limpo.includes(',')) {
-            limpo = limpo + ",00";
-        }
+        if (!limpo.includes(',')) limpo = limpo + ",00";
         return limpo + "€";
     };
 
-    // AUTH
     window.login = async () => {
         try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); document.getElementById('login-overlay').style.display='none'; }
         catch (e) { alert("Erro de login."); }
     };
+
     onAuthStateChanged(auth, (user) => {
         userLogado = user;
         document.getElementById('admin-controls').style.display = user ? 'block' : 'none';
         document.getElementById('btn-auth-toggle').innerText = user ? 'Logout' : 'Login';
         document.getElementById('btn-auth-toggle').onclick = user ? () => signOut(auth) : () => document.getElementById('login-overlay').style.display='flex';
-        // Re-renderizar para mostrar/esconder botões de edição corretamente
         renderizar(todosArtigos);
     });
 
-    // DINAMISMO DE MARCAS NO FILTRO
-    const atualizarFiltroMarcas = (artigos) => {
-        const select = document.getElementById('filtroMarca');
-        const marcasExistentes = [...new Set(artigos.map(a => a.marca).filter(m => m))];
-        marcasExistentes.sort();
-        
-        select.innerHTML = '<option value="">Todas as Marcas</option>';
-        marcasExistentes.forEach(marca => {
-            select.innerHTML += `<option value="${marca.toUpperCase()}">${marca}</option>`;
-        });
-    };
-
-    // RENDER E FILTRO
     const renderizar = (lista) => {
         const vitrine = document.getElementById('vitrine');
         vitrine.innerHTML = "";
         lista.forEach(a => {
             const card = document.createElement('div');
             card.className = 'card';
-            // Clique principal abre a visualização do produto
             card.onclick = () => abrirShop(a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho);
-
             card.innerHTML = `
-                <div class="img-wrapper"><img src="imagens/${a.foto}"></div>
+                <div class="img-wrapper"><img src="imagens/${a.foto}" loading="lazy"></div>
                 <div class="card-info">
                     <div class="card-brand">${a.marca || 'VAULT'}</div>
                     <h3>${a.nome}</h3>
@@ -266,23 +269,57 @@
                     </div>
                     ${userLogado ? `<p id="edit-btn-${a.id}" style="color:var(--accent); font-size:0.6rem; margin-top:15px; font-weight:bold; cursor:pointer; display:inline-block;">EDITAR</p>` : ''}
                 </div>`;
-
-            // Configuração segura do botão editar
             if (userLogado) {
                 setTimeout(() => {
                     const btn = document.getElementById(`edit-btn-${a.id}`);
-                    if (btn) {
-                        btn.onclick = (e) => {
-                            e.stopPropagation(); // Impede de abrir o modal de compra ao clicar em editar
-                            prepararEdicao(a.id, a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho);
-                        };
-                    }
+                    if (btn) btn.onclick = (e) => { e.stopPropagation(); prepararEdicao(a.id, a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho); };
                 }, 0);
             }
             vitrine.appendChild(card);
         });
     };
 
+    window.salvarArtigo = async () => {
+        if (!userLogado) return alert("Ação não permitida.");
+        const id = document.getElementById('edit-id').value;
+        let fotoNome = document.getElementById('foto-nova').value.trim();
+        
+        // AUTO-ADD .webp
+        if(fotoNome && !fotoNome.toLowerCase().endsWith('.webp')) {
+            fotoNome += ".webp";
+        }
+
+        const dados = {
+            nome: document.getElementById('nome-novo').value,
+            marca: document.getElementById('marca-nova').value.toUpperCase().trim(),
+            tamanho: document.getElementById('tamanho-novo').value,
+            foto: fotoNome,
+            preco: formatarPrecoAutomatico(document.getElementById('preco-novo').value),
+            link: document.getElementById('link-novo').value,
+            descricao: document.getElementById('desc-nova').value,
+            data: Date.now()
+        };
+        
+        id ? await updateDoc(doc(db, "artigos", id), dados) : await addDoc(collection(db, "artigos"), dados);
+        fecharForm();
+    };
+
+    window.abrirShop = (nome, preco, foto, link, desc, marca, tam) => {
+        document.getElementById('shop-title').innerText = nome;
+        document.getElementById('shop-brand').innerText = marca || 'VAULT PIECE';
+        document.getElementById('shop-price').innerText = preco;
+        document.getElementById('shop-size').innerText = tam || 'M';
+        document.getElementById('shop-img').src = `imagens/${foto}`;
+        document.getElementById('shop-link').href = link;
+        document.getElementById('shop-desc').innerText = desc || "Peça selecionada do arquivo pessoal.";
+
+        const numeroWA = "351961688493"; 
+        const textoWA = encodeURIComponent(`Olá Martim! Vi no teu Vault a peça: ${nome}. Ainda está disponível?`);
+        document.getElementById('shop-wa').href = `https://wa.me/${numeroWA}?text=${textoWA}`;
+        document.getElementById('shop-modal').style.display = 'flex';
+    };
+
+    // Filtros e Snapshots permanecem iguais...
     const filtrar = () => {
         const termo = document.getElementById('inputPesquisa').value.toLowerCase();
         const marca = document.getElementById('filtroMarca').value.toUpperCase();
@@ -302,81 +339,35 @@
 
     onSnapshot(query(collection(db, "artigos"), orderBy("data", "desc")), (snap) => {
         todosArtigos = snap.docs.map(d => ({id: d.id, ...d.data()}));
-        atualizarFiltroMarcas(todosArtigos);
+        const select = document.getElementById('filtroMarca');
+        const marcas = [...new Set(todosArtigos.map(a => a.marca).filter(m => m))].sort();
+        select.innerHTML = '<option value="">Todas as Marcas</option>';
+        marcas.forEach(m => select.innerHTML += `<option value="${m.toUpperCase()}">${m}</option>`);
         filtrar();
     });
 
-    // CRUD SEGURO
-    window.salvarArtigo = async () => {
-        if (!userLogado) return alert("Ação não permitida.");
-        
-        const id = document.getElementById('edit-id').value;
-        const precoRaw = document.getElementById('preco-novo').value;
-        
-        const dados = {
-            nome: document.getElementById('nome-novo').value,
-            marca: document.getElementById('marca-nova').value.toUpperCase().trim(),
-            tamanho: document.getElementById('tamanho-novo').value,
-            foto: document.getElementById('foto-nova').value,
-            preco: formatarPrecoAutomatico(precoRaw),
-            link: document.getElementById('link-novo').value,
-            descricao: document.getElementById('desc-nova').value,
-            data: Date.now()
-        };
-        
-        if(!dados.nome || !precoRaw) return alert("Nome e Preço são obrigatórios.");
-        id ? await updateDoc(doc(db, "artigos", id), dados) : await addDoc(collection(db, "artigos"), dados);
-        fecharForm();
-    };
-
     window.eliminarArtigo = async () => {
-        if (!userLogado) return;
         const id = document.getElementById('edit-id').value;
-        if(id && confirm("Desejas eliminar esta peça do arquivo para sempre?")) {
-            await deleteDoc(doc(db, "artigos", id));
-            fecharForm();
-        }
+        if(id && confirm("Eliminar para sempre?")) { await deleteDoc(doc(db, "artigos", id)); fecharForm(); }
     };
 
-    window.prepararEdicao = (id, nome, preco, foto, link, desc, marca, tam) => {
-        if (!userLogado) return; // Bloqueio extra
+    window.prepararEdicao = (id, n, p, f, l, d, m, t) => {
         document.getElementById('edit-id').value = id;
-        document.getElementById('nome-novo').value = nome;
-        document.getElementById('marca-nova').value = marca || '';
-        document.getElementById('tamanho-novo').value = tam || 'M';
-        document.getElementById('preco-novo').value = preco;
-        document.getElementById('foto-nova').value = foto;
-        document.getElementById('link-novo').value = link;
-        document.getElementById('desc-nova').value = desc || '';
+        document.getElementById('nome-novo').value = n;
+        document.getElementById('marca-nova').value = m || '';
+        document.getElementById('tamanho-novo').value = t || 'M';
+        document.getElementById('preco-novo').value = p;
+        document.getElementById('foto-nova').value = f;
+        document.getElementById('link-novo').value = l;
+        document.getElementById('desc-nova').value = d || '';
         document.getElementById('form-titulo').innerText = "EDITAR ARTIGO";
         document.getElementById('btn-eliminar').style.display = "block";
         document.getElementById('form-modal').style.display = 'flex';
     };
 
-    window.abrirShop = (nome, preco, foto, link, desc, marca, tam) => {
-        document.getElementById('shop-title').innerText = nome;
-        document.getElementById('shop-brand').innerText = marca || 'VAULT PIECE';
-        document.getElementById('shop-price').innerText = preco;
-        document.getElementById('shop-size').innerText = tam || 'M';
-        document.getElementById('shop-img').src = `imagens/${foto}`;
-        document.getElementById('shop-link').href = link;
-        document.getElementById('shop-desc').innerText = desc || "Peça selecionada do arquivo pessoal.";
-        document.getElementById('shop-modal').style.display = 'flex';
-    };
-
     window.fecharShop = (e) => e.target.id === 'shop-modal' && (document.getElementById('shop-modal').style.display='none');
-    window.abrirForm = () => { 
-        if (!userLogado) return;
-        document.getElementById('edit-id').value=""; 
-        document.getElementById('form-titulo').innerText = "NOVA PEÇA";
-        document.getElementById('btn-eliminar').style.display = "none";
-        document.getElementById('form-modal').style.display='flex'; 
-    };
-    window.fecharForm = () => {
-        document.getElementById('form-modal').style.display='none';
-        const inputs = document.querySelectorAll('#form-modal input, #form-modal textarea');
-        inputs.forEach(i => i.value = "");
-    };
+    window.abrirForm = () => { if (!userLogado) return; document.getElementById('edit-id').value=""; document.getElementById('form-titulo').innerText = "NOVA PEÇA"; document.getElementById('btn-eliminar').style.display = "none"; document.getElementById('form-modal').style.display='flex'; };
+    window.fecharForm = () => { document.getElementById('form-modal').style.display='none'; document.querySelectorAll('#form-modal input, #form-modal textarea').forEach(i => i.value = ""); };
 </script>
 </body>
 </html>
