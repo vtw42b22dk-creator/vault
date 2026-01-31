@@ -18,7 +18,30 @@
             --border: rgba(255, 255, 255, 0.1);
             --danger: #ff4d4d;
         }
+/* ESTILO DO BOTÃO EDITAR (ADMIN) */
+.btn-editar-admin {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(216, 180, 254, 0.1); /* Cor de destaque var(--accent) com transparência */
+    color: var(--accent) !important;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Syne';
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
+.btn-editar-admin:hover {
+    background: var(--accent);
+    color: #000 !important;
+}
         html, body { scroll-behavior: smooth; overflow-x: hidden; width: 100%; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -188,7 +211,10 @@
                 <option value="S">S</option><option value="M" selected>M</option>
                 <option value="L">L</option><option value="XL">XL</option>
             </select>
-            <input type="text" id="foto-nova" placeholder="nome-da-imagem (sem extensão)">
+            <div style="margin-bottom: 15px;">
+    <label style="font-size: 0.7rem; opacity: 0.5; display: block; margin-bottom: 5px;">FOTO DA PEÇA</label>
+    <input type="file" id="foto-ficheiro" accept="image/*" style="padding: 10px; background: #0b0e14; border: 1px solid var(--border); width: 100%; color: white; border-radius: 12px;">
+</div>
             <input type="text" id="preco-novo" placeholder="Preço (ex: 13)">
             <input type="text" id="link-novo" placeholder="URL Vinted">
             <textarea id="desc-nova" placeholder="Descrição da peça..."></textarea>
@@ -230,17 +256,23 @@
     const db = getFirestore(app);
     let userLogado = null;
     let todosArtigos = [];
+    let enviando = false; // Bloqueador de cliques duplos
 
     const formatarPrecoAutomatico = (valor) => {
-        let limpo = valor.toString().replace('€', '').replace('$', '').trim();
+        if (!valor) return "0,00€";
+        let limpo = valor.toString().replace(/[€$]/g, '').trim();
         if (limpo === "") return "";
         if (!limpo.includes(',')) limpo = limpo + ",00";
         return limpo + "€";
     };
 
     window.login = async () => {
-        try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); document.getElementById('login-overlay').style.display='none'; }
-        catch (e) { alert("Erro de login."); }
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        try { 
+            await signInWithEmailAndPassword(auth, email, pass); 
+            document.getElementById('login-overlay').style.display='none'; 
+        } catch (e) { alert("Erro de login: " + e.message); }
     };
 
     onAuthStateChanged(auth, (user) => {
@@ -254,12 +286,21 @@
     const renderizar = (lista) => {
         const vitrine = document.getElementById('vitrine');
         vitrine.innerHTML = "";
+        
         lista.forEach(a => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.onclick = () => abrirShop(a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho);
+            
+            // Tratamento seguro da imagem
+            let imagemFinal = 'imagens/placeholder.png';
+            if (a.foto && typeof a.foto === 'string') {
+                imagemFinal = a.foto.startsWith('http') ? a.foto : `imagens/${a.foto}`;
+            }
+
             card.innerHTML = `
-                <div class="img-wrapper"><img src="imagens/${a.foto}" loading="lazy"></div>
+                <div class="img-wrapper" onclick="abrirShop('${a.nome}', '${a.preco}', '${a.foto}', '${a.link}', '${(a.descricao || '').replace(/'/g, "\\'")}', '${a.marca}', '${a.tamanho}')">
+                    <img src="${imagemFinal}" loading="lazy">
+                </div>
                 <div class="card-info">
                     <div class="card-brand">${a.marca || 'VAULT'}</div>
                     <h3>${a.nome}</h3>
@@ -267,41 +308,68 @@
                         <span class="price">${a.preco}</span>
                         <span class="size-tag">${a.tamanho || 'M'}</span>
                     </div>
-                    ${userLogado ? `<p id="edit-btn-${a.id}" style="color:var(--accent); font-size:0.6rem; margin-top:15px; font-weight:bold; cursor:pointer; display:inline-block;">EDITAR</p>` : ''}
-                </div>`;
-            if (userLogado) {
-                setTimeout(() => {
-                    const btn = document.getElementById(`edit-btn-${a.id}`);
-                    if (btn) btn.onclick = (e) => { e.stopPropagation(); prepararEdicao(a.id, a.nome, a.preco, a.foto, a.link, a.descricao || '', a.marca, a.tamanho); };
-                }, 0);
-            }
+                    ${userLogado ? `<div class="btn-editar-admin" onclick="event.stopPropagation(); prepararEdicao('${a.id}', '${a.nome}', '${a.preco}', '${a.foto}', '${a.link}', '${(a.descricao || '').replace(/'/g, "\\'")}', '${a.marca}', '${a.tamanho}')">EDITAR PEÇA</div>` : ''}
+                </div>
+            `;
             vitrine.appendChild(card);
         });
     };
 
     window.salvarArtigo = async () => {
-        if (!userLogado) return alert("Ação não permitida.");
+        if (!userLogado || enviando) return;
+        
+        const btnSalvar = document.querySelector('.btn-action');
         const id = document.getElementById('edit-id').value;
-        let fotoNome = document.getElementById('foto-nova').value.trim();
+        const file = document.getElementById('foto-ficheiro').files[0];
         
-        // AUTO-ADD .webp
-        if(fotoNome && !fotoNome.toLowerCase().endsWith('.webp')) {
-            fotoNome += ".webp";
-        }
+        enviando = true;
+        btnSalvar.innerText = "A GUARDAR...";
+        btnSalvar.style.opacity = "0.5";
 
-        const dados = {
-            nome: document.getElementById('nome-novo').value,
-            marca: document.getElementById('marca-nova').value.toUpperCase().trim(),
-            tamanho: document.getElementById('tamanho-novo').value,
-            foto: fotoNome,
-            preco: formatarPrecoAutomatico(document.getElementById('preco-novo').value),
-            link: document.getElementById('link-novo').value,
-            descricao: document.getElementById('desc-nova').value,
-            data: Date.now()
-        };
-        
-        id ? await updateDoc(doc(db, "artigos", id), dados) : await addDoc(collection(db, "artigos"), dados);
-        fecharForm();
+        try {
+            let fotoURL = id ? (todosArtigos.find(a => a.id === id)?.foto || "") : "";
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', 'martim_vault');
+
+                const res = await fetch('https://api.cloudinary.com/v1_1/dhpcbqtst/image/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+                if (json.secure_url) fotoURL = json.secure_url;
+            }
+
+            const dados = {
+                nome: document.getElementById('nome-novo').value,
+                marca: document.getElementById('marca-nova').value.toUpperCase().trim(),
+                tamanho: document.getElementById('tamanho-novo').value,
+                foto: fotoURL, 
+                preco: formatarPrecoAutomatico(document.getElementById('preco-novo').value),
+                link: document.getElementById('link-novo').value,
+                descricao: document.getElementById('desc-nova').value,
+                data: id ? (todosArtigos.find(a => a.id === id)?.data || Date.now()) : Date.now()
+            };
+            
+            if (id) {
+                await updateDoc(doc(db, "artigos", id), dados);
+            } else {
+                await addDoc(collection(db, "artigos"), dados);
+            }
+
+            fecharForm();
+            // Aviso discreto no console em vez de alert chatos
+            console.log("Arquivo atualizado com sucesso!");
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao salvar. Tenta novamente.");
+        } finally {
+            enviando = false;
+            btnSalvar.innerText = "Confirmar Artigo";
+            btnSalvar.style.opacity = "1";
+        }
     };
 
     window.abrirShop = (nome, preco, foto, link, desc, marca, tam) => {
@@ -309,7 +377,10 @@
         document.getElementById('shop-brand').innerText = marca || 'VAULT PIECE';
         document.getElementById('shop-price').innerText = preco;
         document.getElementById('shop-size').innerText = tam || 'M';
-        document.getElementById('shop-img').src = `imagens/${foto}`;
+        
+        const imagemExibir = (foto && foto.startsWith('http')) ? foto : `imagens/${foto}`;
+        
+        document.getElementById('shop-img').src = imagemExibir;
         document.getElementById('shop-link').href = link;
         document.getElementById('shop-desc').innerText = desc || "Peça selecionada do arquivo pessoal.";
 
@@ -319,13 +390,13 @@
         document.getElementById('shop-modal').style.display = 'flex';
     };
 
-    // Filtros e Snapshots permanecem iguais...
     const filtrar = () => {
-        const termo = document.getElementById('inputPesquisa').value.toLowerCase();
-        const marca = document.getElementById('filtroMarca').value.toUpperCase();
-        const tamanho = document.getElementById('filtroTamanho').value;
+        const termo = (document.getElementById('inputPesquisa').value || "").toLowerCase();
+        const marca = (document.getElementById('filtroMarca').value || "").toUpperCase();
+        const tamanho = document.getElementById('filtroTamanho').value || "";
+        
         const filtrados = todosArtigos.filter(a => {
-            const matchNome = a.nome.toLowerCase().includes(termo);
+            const matchNome = (a.nome || "").toLowerCase().includes(termo);
             const matchMarca = marca === "" || (a.marca && a.marca.toUpperCase() === marca);
             const matchTamanho = tamanho === "" || a.tamanho === tamanho;
             return matchNome && matchMarca && matchTamanho;
@@ -340,16 +411,14 @@
     onSnapshot(query(collection(db, "artigos"), orderBy("data", "desc")), (snap) => {
         todosArtigos = snap.docs.map(d => ({id: d.id, ...d.data()}));
         const select = document.getElementById('filtroMarca');
-        const marcas = [...new Set(todosArtigos.map(a => a.marca).filter(m => m))].sort();
-        select.innerHTML = '<option value="">Todas as Marcas</option>';
-        marcas.forEach(m => select.innerHTML += `<option value="${m.toUpperCase()}">${m}</option>`);
-        filtrar();
+        const marcasExistentes = [...new Set(todosArtigos.map(a => a.marca).filter(m => m))].sort();
+        
+        let htmlMarcas = '<option value="">Todas as Marcas</option>';
+        marcasExistentes.forEach(m => htmlMarcas += `<option value="${m.toUpperCase()}">${m}</option>`);
+        select.innerHTML = htmlMarcas;
+        
+        renderizar(todosArtigos);
     });
-
-    window.eliminarArtigo = async () => {
-        const id = document.getElementById('edit-id').value;
-        if(id && confirm("Eliminar para sempre?")) { await deleteDoc(doc(db, "artigos", id)); fecharForm(); }
-    };
 
     window.prepararEdicao = (id, n, p, f, l, d, m, t) => {
         document.getElementById('edit-id').value = id;
@@ -357,7 +426,6 @@
         document.getElementById('marca-nova').value = m || '';
         document.getElementById('tamanho-novo').value = t || 'M';
         document.getElementById('preco-novo').value = p;
-        document.getElementById('foto-nova').value = f;
         document.getElementById('link-novo').value = l;
         document.getElementById('desc-nova').value = d || '';
         document.getElementById('form-titulo').innerText = "EDITAR ARTIGO";
@@ -365,9 +433,29 @@
         document.getElementById('form-modal').style.display = 'flex';
     };
 
-    window.fecharShop = (e) => e.target.id === 'shop-modal' && (document.getElementById('shop-modal').style.display='none');
-    window.abrirForm = () => { if (!userLogado) return; document.getElementById('edit-id').value=""; document.getElementById('form-titulo').innerText = "NOVA PEÇA"; document.getElementById('btn-eliminar').style.display = "none"; document.getElementById('form-modal').style.display='flex'; };
-    window.fecharForm = () => { document.getElementById('form-modal').style.display='none'; document.querySelectorAll('#form-modal input, #form-modal textarea').forEach(i => i.value = ""); };
+    window.eliminarArtigo = async () => {
+        const id = document.getElementById('edit-id').value;
+        if(id && confirm("Eliminar para sempre?")) { 
+            await deleteDoc(doc(db, "artigos", id)); 
+            fecharForm(); 
+        }
+    };
+
+    window.fecharShop = (e) => {
+        if (e.target.id === 'shop-modal') document.getElementById('shop-modal').style.display='none';
+    };
+
+    window.abrirForm = () => { 
+        if (!userLogado) return; 
+        document.getElementById('edit-id').value = "";
+        document.getElementById('form-titulo').innerText = "NOVA PEÇA";
+        document.getElementById('btn-eliminar').style.display = "none";
+        document.querySelectorAll('#form-modal input, #form-modal textarea').forEach(i => i.value = "");
+        document.getElementById('form-modal').style.display='flex'; 
+    };
+
+    window.fecharForm = () => { 
+        document.getElementById('form-modal').style.display='none';
+        enviando = false;
+    };
 </script>
-</body>
-</html>
